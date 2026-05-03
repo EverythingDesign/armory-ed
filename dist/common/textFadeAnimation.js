@@ -1,0 +1,1 @@
+function createTextFade(o,e,r="top bottom",l="bottom bottom"){let a="#ff942d",n="#ffffff";const t=document.querySelectorAll(`${o} .char`);if(t.length===0)return;gsap.timeline({scrollTrigger:{trigger:e,start:r,end:l,scrub:!0}}).to(t,{opacity:1,color:a,duration:.4,ease:"power2.inOut",stagger:.2}).to(t,{color:n,duration:.3,stagger:.2,ease:"power2.inOut"},.3)}
