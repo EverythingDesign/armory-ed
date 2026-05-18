@@ -2,7 +2,7 @@ gsap.registerPlugin(SplitText);
 function runIntroAnimations(blockSelector) {
   // if (window.scrollY > 50) return;
   const startColor = "#ff4d17";
-  const endColor = "#ffffff";
+  let endColor = "#ffffff";
 
   const contentBlock = document.querySelector(blockSelector);
   // console.log(contentBlock);
