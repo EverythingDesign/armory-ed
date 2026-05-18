@@ -1,11 +1,9 @@
 gsap.registerPlugin(SplitText);
 function runIntroAnimations(blockSelector, eColor) {
-  // if (window.scrollY > 50) return;
   const startColor = "#ff4d17";
   let endColor = eColor;
 
   const contentBlock = document.querySelector(blockSelector);
-  // console.log(contentBlock);
 
   const textSplit = contentBlock.querySelectorAll("h1 .word");
   const subheadingBlocks = contentBlock.querySelectorAll(
@@ -17,26 +15,30 @@ function runIntroAnimations(blockSelector, eColor) {
 
   const tl = gsap.timeline();
 
+  const initialFrame = document.querySelector("[initial-frame='true']");
+  if (initialFrame) {
+    tl.to(
+      initialFrame,
+      {
+        transform: "scale(1.06)",
+        ease: "power2.out",
+        duration: 0.8,
+      },
+      "<"
+    );
+  }
+
   tl.to(
-    "[initial-frame='true']",
+    textSplit,
     {
-      transform: "scale(1.06)",
-      ease: "power2.out",
-      duration: 0.8,
+      opacity: 1,
+      color: startColor,
+      duration: 0.3,
+      ease: "power2.inOut",
+      stagger: 0.1,
     },
     "<"
   )
-    .to(
-      textSplit,
-      {
-        opacity: 1,
-        color: startColor,
-        duration: 0.3,
-        ease: "power2.inOut",
-        stagger: 0.1,
-      },
-      "<"
-    )
     .to(
       textSplit,
       {
