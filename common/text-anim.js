@@ -1,17 +1,34 @@
 gsap.registerPlugin(SplitText);
-function runIntroAnimations(blockSelector, eColor) {
+function runIntroAnimations(blockSelector, eColor, splitType = "word") {
   const startColor = "#ff4d17";
   let endColor = eColor;
 
   const contentBlock = document.querySelector(blockSelector);
+  
+  const userSplitType = contentBlock.getAttribute("data-split-type") || splitType;
+  const heading = contentBlock.querySelector("h1");
+  let textSplit;
+  
+  if (heading) {
+    if (userSplitType === "char" || userSplitType === "chars") {
+      const st = new SplitText(heading, { type: "chars", charsClass: "char" });
+      textSplit = st.chars;
+    } else {
+      const st = new SplitText(heading, { type: "words", wordsClass: "word" });
+      textSplit = st.words;
+    }
+  } else {
+    textSplit = contentBlock.querySelectorAll(
+      userSplitType === "char" || userSplitType === "chars" ? "h1 .char" : "h1 .word"
+    );
+  }
 
-  const textSplit = contentBlock.querySelectorAll("h1 .word");
   const subheadingBlocks = contentBlock.querySelectorAll(
     "[subheading] .text-subheading"
   );
   gsap.set(subheadingBlocks, { opacity: 0 });
 
-  if (!textSplit) return;
+  if (!textSplit || textSplit.length === 0) return;
 
   const tl = gsap.timeline();
 
@@ -28,6 +45,8 @@ function runIntroAnimations(blockSelector, eColor) {
     );
   }
 
+  const staggerAmount = userSplitType === "char" || userSplitType === "chars" ? 0.04 : 0.1;
+
   tl.to(
     textSplit,
     {
@@ -35,7 +54,7 @@ function runIntroAnimations(blockSelector, eColor) {
       color: startColor,
       duration: 0.3,
       ease: "power2.inOut",
-      stagger: 0.1,
+      stagger: staggerAmount,
     },
     "<"
   )
@@ -44,7 +63,7 @@ function runIntroAnimations(blockSelector, eColor) {
       {
         color: endColor,
         duration: 0.3,
-        stagger: 0.1,
+        stagger: staggerAmount,
         ease: "power2.inOut",
       },
       0.4
